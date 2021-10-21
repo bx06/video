@@ -8,16 +8,18 @@ import com.netflix.loadbalancer.IPing;
 import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.PingUrl;
 
+/**
+ * @author wangzr
+ */
 public class RibbonConfiguration {
 
-	@Bean
-	public IPing ribbonPing(IClientConfig config) {
-		return new PingUrl();
-	}
+    @Bean
+    public IPing ribbonPing() {
+        return new PingUrl();
+    }
 
-	@Bean
-	public IRule ribbonRule(IClientConfig config) {
-		return new AvailabilityFilteringRule();
-	}
-
+    @Bean
+    public IRule ribbonRule() {
+        return new AvailabilityFilteringRule();
+    }
 }

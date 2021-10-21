@@ -10,22 +10,24 @@ import com.ops.www.system.SystemBoot;
 /**
  * @author 作者 cp
  * @version 创建时间：2020年7月13日 上午10:53:03
- * 
  */
 @Component
 public class DefaultSystemBoot implements SystemBoot {
 
-	@Autowired
-	@Qualifier("rtspPlayManager")
-	private PlayManager rtspPlayManager;
+    @Qualifier("rtspPlayManager")
+    private PlayManager rtspPlayManager;
 
-	private void start() {
-		rtspPlayManager.start();
-	}
+    @Autowired
+    private void setManager(PlayManager rtspPlayManager) {
+        this.rtspPlayManager = rtspPlayManager;
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		start();
-	}
+    private void start() {
+        rtspPlayManager.start();
+    }
 
+    @Override
+    public void run(String... args) {
+        start();
+    }
 }

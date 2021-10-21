@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author wangzr
+ */
 @Configuration
 public class RestTemplateConfig {
 
@@ -20,7 +23,7 @@ public class RestTemplateConfig {
 
 	@Bean
 	public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
-		SSL factory = new SSL();
+		SecureSocketsLayer factory = new SecureSocketsLayer();
 		factory.setReadTimeout(5000);
 		factory.setConnectTimeout(6000);
 		return factory;

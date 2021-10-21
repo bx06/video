@@ -1,5 +1,8 @@
 logging:
-  file:    path: src/main/resources/logging/
+  file:
+    path: logging/
+  level:
+    root: warn
 management:
   endpoints:
     web:

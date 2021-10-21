@@ -13,19 +13,26 @@ import com.ops.www.center.module.CenterCallbackService;
 import com.ops.www.common.dto.PlayConfig;
 import com.ops.www.common.dto.ResultModel;
 
+/**
+ * @author wangzr
+ */
 @Controller
 @RequestMapping("/center")
 public class CenterController {
 
-	@Autowired
-	private CenterCallbackService centerCallbackService;
+    private CenterCallbackService centerCallbackService;
 
-	@RequestMapping(value = "/onClose")
-	@ResponseBody
-	public ResultModel onClose(@RequestParam Map<String, Object> paramMap) {
-		PlayConfig playConfig = JSONObject.parseObject(paramMap.get("playConfig").toString(), PlayConfig.class);
-		String lines = paramMap.get("lines").toString();
-		centerCallbackService.onClose(playConfig, lines);
-		return new ResultModel(null, true, null);
-	}
+    @Autowired
+    private void setService(CenterCallbackService centerCallbackService) {
+        this.centerCallbackService = centerCallbackService;
+    }
+
+    @RequestMapping(value = "/onClose")
+    @ResponseBody
+    public ResultModel onClose(@RequestParam Map<String, Object> paramMap) {
+        PlayConfig playConfig = JSONObject.parseObject(paramMap.get("playConfig").toString(), PlayConfig.class);
+        String lines = paramMap.get("lines").toString();
+        centerCallbackService.onClose(playConfig, lines);
+        return new ResultModel(null, true, null);
+    }
 }

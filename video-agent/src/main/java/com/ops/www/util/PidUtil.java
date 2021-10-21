@@ -1,6 +1,7 @@
 package com.ops.www.util;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,18 +9,21 @@ import org.apache.logging.log4j.Logger;
 import com.ops.www.common.util.ProcessUtil;
 import com.sun.jna.Platform;
 
+/**
+ * @author wangzr
+ */
 public class PidUtil {
 
 	protected static Logger logger = LogManager.getLogger();
 
 	public static long getPid(Process process) {
 		long pid = -1;
-		Field field = null;
+		Field field;
 		if (Platform.isWindows()) {
 			try {
 				field = process.getClass().getDeclaredField("handle");
 				field.setAccessible(true);
-				pid = Kernel32.INSTANCE.GetProcessId((Long) field.get(process));
+				pid = Kernel32.INSTANCE.getProcessId((Long) field.get(process));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -47,12 +51,12 @@ public class PidUtil {
 			return;
 		}
 		logger.debug("start do shell [{}]...", cmd);
-		ProcessUtil.doCmd("killPid " + pid, cmd, null, null, 0).waitClose();
+		Objects.requireNonNull(ProcessUtil.doCmd("killPid " + pid, cmd, null, null, 0)).waitClose();
 		logger.debug("end do shell [{}]", cmd);
 
 	}
 
-	public static String killProcesCmd(String name) {
+	public static String killProcessCmd(String name) {
 		String cmd = null;
 		if (Platform.isWindows()) {
 			cmd = "taskkill /f /t /im " + name + ".exe";
@@ -62,12 +66,10 @@ public class PidUtil {
 		return cmd;
 	}
 
-	public static void killProces(String name) {
-		String cmd = killProcesCmd(name);
+	public static void killProcess(String name) {
+		String cmd = killProcessCmd(name);
 		logger.debug("start do shell [{}]...", cmd);
-		ProcessUtil.doCmd("killPid " + name, cmd, null, null, 0).waitClose();
+		Objects.requireNonNull(ProcessUtil.doCmd("killPid " + name, cmd, null, null, 0)).waitClose();
 		logger.debug("end do shell [{}]", cmd);
-
 	}
-
 }

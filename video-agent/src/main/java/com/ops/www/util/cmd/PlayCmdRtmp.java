@@ -30,18 +30,15 @@ public class PlayCmdRtmp {
 
 	private static String cpuCmd(String rtsp, String userName, String passWord, String size, String rtmpIp, int port,
 			String theme, int timeOut) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("ffmpeg").append(" -stimeout ").append(timeOut).append("000000").append(" -i ");
-		sb.append(buildRtsp(rtsp, userName, passWord));
-		sb.append(" -q 0 -ar 44100 -f flv -s ").append(size);
-		sb.append(" -y -max_muxing_queue_size 9999 rtmp://").append(rtmpIp).append(":").append(port).append("/")
-				.append(theme);
-		return sb.toString();
+		return "ffmpeg" + " -stimeout " + timeOut + "000000" + " -i " +
+				buildRtsp(rtsp, userName, passWord) +
+				" -q 0 -ar 44100 -f flv -s " + size +
+				" -y -max_muxing_queue_size 9999 rtmp://" + rtmpIp + ":" + port + "/" +
+				theme;
 	}
 
-	public static String playCmd(byte type, String rtsp, String userName, String passWord, String size, String rtmpIp,
-			int port, String theme, int timeOut) {
+	public static String playCmd(String rtsp, String userName, String passWord, String size, String rtmpIp, int port,
+								 String theme, int timeOut) {
 		return cpuCmd(rtsp, userName, passWord, size, rtmpIp, port, theme, timeOut);
 	}
-
 }

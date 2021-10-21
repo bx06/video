@@ -8,5 +8,4 @@ import org.springframework.boot.CommandLineRunner;
  * 
  */
 public interface SystemBoot extends CommandLineRunner {
-
 }

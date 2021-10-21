@@ -10,25 +10,37 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ops.www.center.service.CenterService;
 import com.ops.www.common.dto.Config2Result;
 
+/**
+ * @author wangzr
+ */
 @Controller
 public class JumpController {
 
-	@Autowired
-	private CenterService centerService;
+    private CenterService centerService;
 
-	@RequestMapping("/")
-	public String defaultJump() {
-		return "default";
-	}
+    @Autowired
+    private void setService(CenterService centerService) {
+        this.centerService = centerService;
+    }
 
-	@RequestMapping("/index")
-	public String index() {
-		return "multiPlay";
-	}
+    @RequestMapping("/")
+    public String defaultJump() {
+        return "default";
+    }
 
-	@RequestMapping("/selectAllCache") // 查询当前所有在线的客户信息
-	@ResponseBody
-	public Map<String, Config2Result> selectAllCache() {
-		return centerService.selectAllCache();
-	}
+    @RequestMapping("/index")
+    public String index() {
+        return "multiPlay";
+    }
+
+    /**
+     * 查询当前所有在线的客户信息
+     *
+     * @return 在线的客户信息
+     */
+    @RequestMapping("/selectAllCache")
+    @ResponseBody
+    public Map<String, Config2Result> selectAllCache() {
+        return centerService.selectAllCache();
+    }
 }

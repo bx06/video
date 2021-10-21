@@ -8,10 +8,26 @@ import javax.websocket.Session;
  */
 public interface WebSocketHandle {
 
-	void closeHandle(Session session);
+    /**
+     * 关闭
+     *
+     * @param session 会话
+     */
+    void closeHandle(Session session);
 
-	void openHandle(Session session, String uuid);
+    /**
+     * 打开
+     *
+     * @param session 会话
+     * @param uuid    唯一ID
+     */
+    void openHandle(Session session, String uuid);
 
-	void onMessageHandle(String message, Session session);
-
+    /**
+     * 信息
+     *
+     * @param message 信息
+     * @param session 会话
+     */
+    void onMessageHandle(String message, Session session);
 }

@@ -37,5 +37,4 @@ public class Config2Result implements Serializable {
 		this.playConfig = playConfig;
 		return this;
 	}
-
 }

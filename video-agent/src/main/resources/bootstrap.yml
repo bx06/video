@@ -1,6 +1,6 @@
 logging:
   file:
-    path: src/main/resources/logging/
+    path: logging/
 host: 127.0.0.1
 system:
 #  ssl: true #是否开启ssl

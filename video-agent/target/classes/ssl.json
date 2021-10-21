@@ -1,5 +1,0 @@
-{
-	"ws.ssl": false,
-	"ws.ssl.cert": "src/main/resources/sslssl.crt",
-	"ws.ssl.key": "src/main/resources/sslssl.key"
-}

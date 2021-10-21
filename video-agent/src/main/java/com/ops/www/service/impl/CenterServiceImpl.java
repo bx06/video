@@ -19,67 +19,67 @@ import com.ops.www.common.dto.ResultModel;
 import com.ops.www.common.util.StringUtils;
 import com.ops.www.service.CenterService;
 
+/**
+ * @author wangzr
+ */
 @Service
 public class CenterServiceImpl implements CenterService {
 
-	private Logger logger = LogManager.getLogger();
+    private final Logger logger = LogManager.getLogger();
 
-	private String center_service;
+    private String centerService;
 
-	private String centerName = "video-center";
+    private String host;
 
-	private String host;
+    @Value(value = "${system.ssl:false}")
+    private boolean ssl;
 
-	@Value(value = "${system.ssl:false}")
-	private boolean ssl;
+    @Qualifier("restTemplate")
+    private RestTemplate restTemplate;
 
-	@Autowired
-	@Qualifier("restTemplate")
-	private RestTemplate restTemplate;
+    @Qualifier("restSslTemplate")
+    private RestTemplate restSslTemplate;
 
-	@Autowired
-	@Qualifier("restSslTemplate")
-	private RestTemplate restSslTemplate;
+    private DiscoveryClient discoveryClient;
 
-	@Autowired
-	private DiscoveryClient discoveryClient;
+    @Autowired
+    private void setTemplate(RestTemplate restTemplate, RestTemplate restSslTemplate, DiscoveryClient discoveryClient) {
+        this.restTemplate = restTemplate;
+        this.restSslTemplate = restSslTemplate;
+        this.discoveryClient = discoveryClient;
+    }
 
-	private synchronized void ckConfig() {
-		if (!StringUtils.isBlank(host)) {
-			return;
-		}
-		List<ServiceInstance> instances = discoveryClient.getInstances(centerName);
-		if (instances.isEmpty()) {
-			return;
-		}
-		ServiceInstance instance = instances.get(0);
-		host = instance.getHost();
-		int port = instance.getPort();
-		if (ssl) {
-			center_service = "https://" + host + ":" + port + "/";
-		} else {
-			center_service = "http://" + host + ":" + port + "/";
-		}
-	}
+    private synchronized void ckConfig() {
+        if (!StringUtils.isBlank(host)) {
+            return;
+        }
+        String centerName = "video-center";
+        List<ServiceInstance> instances = discoveryClient.getInstances(centerName);
+        if (instances.isEmpty()) {
+            return;
+        }
+        ServiceInstance instance = instances.get(0);
+        host = instance.getHost();
+        int port = instance.getPort();
+        if (ssl) {
+            centerService = "https://" + host + ":" + port + "/";
+        } else {
+            centerService = "http://" + host + ":" + port + "/";
+        }
+    }
 
-	@Override
-	public ResultModel onClose(PlayConfig playConfig, String lines) {
-		try {
-			ckConfig();
-			MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<String, Object>();
-			paramMap.add("playConfig", playConfig);
-			paramMap.add("lines", lines);
-			RestTemplate temp = null;
-			if (ssl) {
-				temp = restSslTemplate;
-			} else {
-				temp = restTemplate;
-			}
-			return temp.postForObject(center_service + "/center/onClose", paramMap, ResultModel.class);
-		} catch (Exception e) {
-			logger.error("onClose call error:{}.", e.getMessage());
-			return new ResultModel("调用失败", false, null);
-		}
-	}
-
+    @Override
+    public ResultModel onClose(PlayConfig playConfig, String lines) {
+        try {
+            ckConfig();
+            MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<>();
+            paramMap.add("playConfig", playConfig);
+            paramMap.add("lines", lines);
+            RestTemplate temp = ssl ? restSslTemplate : restTemplate;
+            return temp.postForObject(centerService + "/center/onClose", paramMap, ResultModel.class);
+        } catch (Exception e) {
+            logger.error("onClose call error:{}.", e.getMessage());
+            return new ResultModel("调用失败", false, null);
+        }
+    }
 }
