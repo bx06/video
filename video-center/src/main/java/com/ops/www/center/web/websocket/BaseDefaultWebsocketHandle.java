@@ -44,7 +44,7 @@ public abstract class BaseDefaultWebsocketHandle implements WebSocketHandle {
 	}
 
 	@OnError
-	public void onError(Session session) {
+	public void onError(Session session, Throwable thr) {
 		onClose(session);
 		logger.warn("WebSocket Error Close:{}.", session.getId());
 	}

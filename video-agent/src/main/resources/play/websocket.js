@@ -18,10 +18,10 @@ var totalSize = 0;
 
 function initWebSocket(websocket_port) {
 	var clientMap = new Map();
-	var sslConfig = JSON.parse(fs.readFileSync("src/main/resources/ssl.json"));
+	var sslConfig = JSON.parse(fs.readFileSync("video-agent/src/main/resources/ssl.json"));
 	var socketServer = null;
 	
-	if(sslConfig["ws.ssl"] == true){
+	if(sslConfig["ws.ssl"] === true){
 		const server = https.createServer({
 			cert: fs.readFileSync(sslConfig["ws.ssl.cert"]),
 			key: fs.readFileSync(sslConfig["ws.ssl.key"])
@@ -55,7 +55,7 @@ function initWebSocket(websocket_port) {
 			if (clientSet) {
 				clientSet.delete(socket);
 				totalSize--;
-				if (clientSet.size == 0) {
+				if (clientSet.size === 0) {
 					clientMap.delete(key);
 					console.log("delete:" + key);
 				}
@@ -82,7 +82,7 @@ function initHttp(stream_port, stream_secret, record_stream, socketServer) {
 	var streamServer = http.createServer(
 		function(request, response) {
 			var params = request.url.substr(1).split('/');
-			if (params.length != 2) {
+			if (params.length !== 2) {
 				console.log("[ERROR]:Incorrect parameters, enter password and push theme");
 				response.end();
 			}

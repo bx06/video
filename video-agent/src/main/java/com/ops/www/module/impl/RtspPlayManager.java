@@ -171,7 +171,7 @@ public class RtspPlayManager implements PlayManager {
 	public void start() {
 		Objects.requireNonNull(ProcessUtil.doCmd("kill node", PidUtil.killProcessCmd("node"), null, null, 0)).waitClose();
 		Objects.requireNonNull(ProcessUtil.doCmd("kill ffmpeg", PidUtil.killProcessCmd("ffmpeg"), null, null, 0)).waitClose();
-		String path = PathUtil.getProjectPath() + "src/main/resources/play/websocket.js";
+		String path = PathUtil.getProjectPath() + "video-agent/src/main/resources/play/websocket.js";
 		String cmd = "node " + path + " " + superSecret + " " + servicePort + " " + wsPort;
 		ProcessUtil.doCmd("playService", cmd, (args, result) -> logger.info(result), null, 0);
 	}

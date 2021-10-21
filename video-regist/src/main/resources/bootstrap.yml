@@ -5,17 +5,23 @@ logging:
     root: warn
     com.netflix: warn
 server:
-  port: 9999 
+  port: 9999
 spring:
   application:
-    name: video-eureka 
+    name: video-eureka
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: false
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      defaultZone: http://localhost:9999/eureka/ 
+      defaultZone: http://localhost:9999/eureka/
   server:
-    eviction-interval-timer-in-ms: 4000 
-    enable-self-preservation: false 
-    renewal-percent-threshold: 0.9 
+    eviction-interval-timer-in-ms: 4000
+    enable-self-preservation: false
+    renewal-percent-threshold: 0.9

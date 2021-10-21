@@ -3,8 +3,8 @@ logging:
     path: logging/
 host: 127.0.0.1
 system:
-#  ssl: true #是否开启ssl
-  ffmpeg: 
+  #  ssl: true #是否开启ssl
+  ffmpeg:
     timeOut: 3
   play:
     service:
@@ -26,13 +26,21 @@ server:
   port: 9998
 spring:
   profiles:
-    active: dev 
+    active: dev
   application:
     name: video-agent
-    
+  devtools:
+    add-properties: false
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+      cache:
+        enabled: false
+
 eureka:
   instance:
-    prefer-ip-address: true 
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://127.0.0.1:9999/eureka/ 
