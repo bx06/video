@@ -46,6 +46,11 @@ public class PlayResult implements Serializable {
         return localHost;
     }
 
+    public PlayResult setLocalPort(int localPort) {
+        this.localPort = localPort;
+        return this;
+    }
+
     public PlayResult setWsIp(String wsIp) {
         this.wsIp = wsIp;
         return this;
@@ -68,11 +73,6 @@ public class PlayResult implements Serializable {
 
     public int getLocalPort() {
         return localPort;
-    }
-
-    public PlayResult setLocalPort(int localPort) {
-        this.localPort = localPort;
-        return this;
     }
 
     @Override

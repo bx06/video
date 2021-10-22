@@ -37,7 +37,7 @@ function findRowId(){
 	$("#multiPlayDiv .sp").each(function(){
 	     var id=$(this).attr("id");
 	     var html=$("#"+id).html();
-	     if(html==null||html.length==0){
+	     if(html==null||html.length===0){
 	    	 childId=id;
 	    	 return false;
 	     }

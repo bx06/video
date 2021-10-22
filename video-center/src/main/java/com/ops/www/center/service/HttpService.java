@@ -2,7 +2,7 @@ package com.ops.www.center.service;
 
 import com.ops.www.common.dto.PlayConfig;
 import com.ops.www.common.dto.PlayResult;
-import com.ops.www.common.dto.ResultModel;
+import com.ops.www.common.dto.ResponseResult;
 
 /**
  * @author 作者 cp
@@ -27,7 +27,7 @@ public interface HttpService {
      * @param protocol 协议
      * @return 关闭结果
      */
-    ResultModel close(String ip, int port, String clientId, byte protocol);
+    ResponseResult close(String ip, int port, String clientId, byte protocol);
 
     /**
      * 关闭
@@ -40,7 +40,7 @@ public interface HttpService {
      * @param protocol   协议
      * @return 关闭结果
      */
-    ResultModel close(String ip, int port, String callbackId, String clientId, String theme, byte protocol);
+    ResponseResult close(String ip, int port, String callbackId, String clientId, String theme, byte protocol);
 
     /**
      * 关闭
@@ -49,5 +49,5 @@ public interface HttpService {
      * @param port 端口
      * @return 关闭结果
      */
-    ResultModel closeAll(String ip, int port);
+    ResponseResult closeAll(String ip, int port);
 }

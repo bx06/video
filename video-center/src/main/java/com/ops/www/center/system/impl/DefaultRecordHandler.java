@@ -1,5 +1,6 @@
 package com.ops.www.center.system.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import com.ops.www.common.util.RecordHandler;
@@ -13,17 +14,15 @@ import java.io.StringWriter;
  * @version 创建时间：2020年7月14日 下午4:17:35
  * 
  */
+@Slf4j
 @Component
 public class DefaultRecordHandler implements RecordHandler {
-
-	private Logger logger = LogManager.getLogger();
 
 	@Override
 	public void handleError(Throwable t) {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw);
 		t.printStackTrace(pw);
-		logger.error("\n" + sw.toString());
+		log.error("\n" + sw);
 	}
-
 }

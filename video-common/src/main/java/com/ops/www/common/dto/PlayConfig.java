@@ -164,5 +164,4 @@ public class PlayConfig implements Serializable {
     public String getKey() {
         return url + "_" + width + "_" + height + "_" + userName + "_" + passWord + "_" + type + "_" + protocol;
     }
-
 }

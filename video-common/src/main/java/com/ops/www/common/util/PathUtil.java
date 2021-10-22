@@ -2,6 +2,7 @@ package com.ops.www.common.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author wangzr
@@ -14,13 +15,9 @@ public final class PathUtil {
      * 项目路径
      */
     public static String getProjectPath() {
-        String osName = System.getProperties().getProperty("os.name");
-        String windows = "Windows";
-        if (osName.startsWith(windows)) {
-            return System.getProperty("user.dir") + File.separator;
-        } else {
-            return File.separator + System.getProperty("user.dir") + File.separator;
-        }
+        String projectPath = System.getProperties().getProperty("os.name").startsWith("Windows") ? "" : File.separator;
+        projectPath += System.getProperty("user.dir") + File.separator;
+        return projectPath;
     }
 
     /**
@@ -31,17 +28,15 @@ public final class PathUtil {
 
     public static void mkDirFile(String destDirName) throws IOException {
         final File parent = new File(destDirName).getParentFile();
-        if (parent == null) {
-            return;
+        if (Objects.nonNull(parent)) {
+            forceMkdir(parent);
         }
-        forceMkdir(parent);
     }
 
     private static void forceMkdir(final File directory) throws IOException {
         if (directory.exists()) {
             if (!directory.isDirectory()) {
-                final String message = "File " + directory + " exists and is "
-                        + "not a directory. Unable to create directory.";
+                final String message = "File " + directory + " exists and is not a directory. Unable to create directory.";
                 throw new IOException(message);
             }
         } else {
@@ -63,7 +58,6 @@ public final class PathUtil {
         if (!path.contains(dot)) {
             return null;
         }
-        return path.substring(path.replaceAll("\\\\", "/").lastIndexOf("/") + 1, path.lastIndexOf("."));
+        return path.substring(path.replaceAll("\\\\", "/").lastIndexOf("/") + 1, path.lastIndexOf(dot));
     }
-
 }

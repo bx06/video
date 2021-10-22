@@ -1,12 +1,5 @@
 package com.ops.www.center.service.impl;
 
-import java.util.Set;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ops.www.center.module.CenterCallbackService;
 import com.ops.www.center.module.VideoService;
 import com.ops.www.center.service.CenterService;
@@ -14,17 +7,21 @@ import com.ops.www.center.service.HttpService;
 import com.ops.www.common.dto.OnCloseCallBack;
 import com.ops.www.common.dto.PlayConfig;
 import com.ops.www.common.dto.PlayResult;
-import com.ops.www.common.dto.ResultModel;
+import com.ops.www.common.dto.ResponseResult;
 import com.ops.www.common.util.RecordHandler;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 /**
  * @author 作者 cp
  * @version 创建时间：2020年7月13日 下午4:20:23
  */
+@Slf4j
 @Service
 public class CenterServiceImpl extends BaseResultCacheService implements CenterService {
-
-    private final Logger logger = LogManager.getLogger();
 
     private final Object lock = new Object();
 
@@ -51,7 +48,7 @@ public class CenterServiceImpl extends BaseResultCacheService implements CenterS
             try {
                 PlayResult ret = selectRetFromCache(playConfig);
                 if (ret != null) {
-                    logger.info("Play from Cache IP:{}.", ret.getLocalHost());
+                    log.info("Play from Cache IP:{}.", ret.getLocalHost());
                     pushCache(callbackId, playConfig, ret);
                     return ret;
                 }
@@ -61,7 +58,7 @@ public class CenterServiceImpl extends BaseResultCacheService implements CenterS
                 }
                 pushCache(callbackId, playConfig, playResult);
                 pushIp2Result(playConfig, playResult);
-                logger.info("Play from new IP:{}.", playResult.getLocalHost());
+                log.info("Play from new IP:{}.", playResult.getLocalHost());
                 return playResult;
             } catch (Exception e) {
                 recordHandler.handleError(e);
@@ -76,13 +73,13 @@ public class CenterServiceImpl extends BaseResultCacheService implements CenterS
             try {
                 Set<PlayResult> results = super.closeByClientId(clientId);
                 if (results.isEmpty()) {
-                    logger.info("Play close From Cache by ClientId:[{}].", clientId);
+                    log.info("Play close From Cache by ClientId:[{}].", clientId);
                     return true;
                 }
                 for (PlayResult playResult : results) {
                     String ip = playResult.getLocalHost();
-                    ResultModel model = httpService.close(ip, playResult.getLocalPort(), clientId, protocol);
-                    logger.info("Play close by ClientId:[{}] in Ip:[{}],ret:{}.", clientId, ip, model.isOk());
+                    ResponseResult model = httpService.close(ip, playResult.getLocalPort(), clientId, protocol);
+                    log.info("Play close by ClientId:[{}] in Ip:[{}],ret:{}.", clientId, ip, model.isOk());
                 }
                 return true;
             } catch (Exception e) {
@@ -102,13 +99,13 @@ public class CenterServiceImpl extends BaseResultCacheService implements CenterS
                     return true;
                 }
                 if (hasSubsTheme(playResult)) {
-                    logger.info("Play close From Cache by ClientId:[{}] And theme:[{}].", clientId, theme);
+                    log.info("Play close From Cache by ClientId:[{}] And theme:[{}].", clientId, theme);
                     return true;
                 }
                 String ip = playResult.getLocalHost();
-                ResultModel model = httpService.close(ip, playResult.getLocalPort(), callbackId, clientId, theme,
+                ResponseResult model = httpService.close(ip, playResult.getLocalPort(), callbackId, clientId, theme,
                         protocol);
-                logger.info("Play close by ClientId:[{}] And theme:[{}] in Ip:[{}],ret:{}.", clientId, theme, ip,
+                log.info("Play close by ClientId:[{}] And theme:[{}] in Ip:[{}],ret:{}.", clientId, theme, ip,
                         model.isOk());
                 super.close(ip, clientId, theme, protocol);
                 return true;
@@ -134,7 +131,7 @@ public class CenterServiceImpl extends BaseResultCacheService implements CenterS
         try {
             centerCallbackService.registerCallBack(key, callBack);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -143,7 +140,7 @@ public class CenterServiceImpl extends BaseResultCacheService implements CenterS
         try {
             centerCallbackService.deleteCallBack(key);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 }

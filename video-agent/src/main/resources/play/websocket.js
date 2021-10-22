@@ -14,12 +14,10 @@ var websocket_port = process.argv[4] || 8082;
 var record_stream = false;
 var totalSize = 0;
 
-
-
 function initWebSocket(websocket_port) {
 	var clientMap = new Map();
 	var sslConfig = JSON.parse(fs.readFileSync("video-agent/src/main/resources/ssl.json"));
-	var socketServer = null;
+	var socketServer;
 	
 	if(sslConfig["ws.ssl"] === true){
 		const server = https.createServer({

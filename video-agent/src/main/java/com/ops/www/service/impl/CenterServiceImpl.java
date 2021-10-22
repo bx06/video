@@ -1,9 +1,10 @@
 package com.ops.www.service.impl;
 
-import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.ops.www.common.dto.PlayConfig;
+import com.ops.www.common.dto.ResponseResult;
+import com.ops.www.common.util.StringUtils;
+import com.ops.www.service.CenterService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,18 +15,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.ops.www.common.dto.PlayConfig;
-import com.ops.www.common.dto.ResultModel;
-import com.ops.www.common.util.StringUtils;
-import com.ops.www.service.CenterService;
+import java.util.List;
 
 /**
  * @author wangzr
  */
+@Slf4j
 @Service
 public class CenterServiceImpl implements CenterService {
-
-    private final Logger logger = LogManager.getLogger();
 
     private String centerService;
 
@@ -69,17 +66,17 @@ public class CenterServiceImpl implements CenterService {
     }
 
     @Override
-    public ResultModel onClose(PlayConfig playConfig, String lines) {
+    public ResponseResult onClose(PlayConfig playConfig, String lines) {
         try {
             ckConfig();
             MultiValueMap<String, Object> paramMap = new LinkedMultiValueMap<>();
             paramMap.add("playConfig", playConfig);
             paramMap.add("lines", lines);
             RestTemplate temp = ssl ? restSslTemplate : restTemplate;
-            return temp.postForObject(centerService + "/center/onClose", paramMap, ResultModel.class);
+            return temp.postForObject(centerService + "/center/onClose", paramMap, ResponseResult.class);
         } catch (Exception e) {
-            logger.error("onClose call error:{}.", e.getMessage());
-            return new ResultModel("调用失败", false, null);
+            log.error("onClose call error:{}.", e.getMessage());
+            return new ResponseResult("调用失败", false, null);
         }
     }
 }

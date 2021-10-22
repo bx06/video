@@ -1,20 +1,17 @@
 package com.ops.www.util;
 
-import java.lang.reflect.Field;
-import java.util.Objects;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.ops.www.common.util.ProcessUtil;
 import com.sun.jna.Platform;
+import lombok.extern.slf4j.Slf4j;
+
+import java.lang.reflect.Field;
+import java.util.Objects;
 
 /**
  * @author wangzr
  */
+@Slf4j
 public class PidUtil {
-
-	protected static Logger logger = LogManager.getLogger();
 
 	public static long getPid(Process process) {
 		long pid = -1;
@@ -50,9 +47,9 @@ public class PidUtil {
 		if (cmd == null) {
 			return;
 		}
-		logger.debug("start do shell [{}]...", cmd);
+		log.debug("start do shell [{}]...", cmd);
 		Objects.requireNonNull(ProcessUtil.doCmd("killPid " + pid, cmd, null, null, 0)).waitClose();
-		logger.debug("end do shell [{}]", cmd);
+		log.debug("end do shell [{}]", cmd);
 
 	}
 
@@ -68,8 +65,8 @@ public class PidUtil {
 
 	public static void killProcess(String name) {
 		String cmd = killProcessCmd(name);
-		logger.debug("start do shell [{}]...", cmd);
+		log.debug("start do shell [{}]...", cmd);
 		Objects.requireNonNull(ProcessUtil.doCmd("killPid " + name, cmd, null, null, 0)).waitClose();
-		logger.debug("end do shell [{}]", cmd);
+		log.debug("end do shell [{}]", cmd);
 	}
 }

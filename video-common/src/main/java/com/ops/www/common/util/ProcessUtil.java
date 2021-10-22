@@ -14,10 +14,10 @@ public class ProcessUtil {
     public static ProcessInstance doCmd(String name, String cmd, CallBack callBack, CallBack onClose, int delay) {
         try {
             Process process = Runtime.getRuntime().exec(cmd);
-            IoReader inputReader = new IoReader(name + "_I", new InputStreamReader(process.getInputStream(), "GB2312"),
-                    callBack, onClose, delay);
-            IoReader errorReader = new IoReader(name + "_E", new InputStreamReader(process.getErrorStream(), "GB2312"),
-                    callBack, onClose, delay);
+            InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), "GB2312");
+            IoReader inputReader = new IoReader(name + "_I", inputStreamReader, callBack, onClose, delay);
+            InputStreamReader errorStreamReader = new InputStreamReader(process.getErrorStream(), "GB2312");
+            IoReader errorReader = new IoReader(name + "_E", errorStreamReader, callBack, onClose, delay);
             inputReader.start();
             errorReader.start();
             return new ProcessInstance(name, process, inputReader, errorReader);
@@ -143,5 +143,4 @@ public class ProcessUtil {
             return open.get();
         }
     }
-
 }

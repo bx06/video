@@ -3,7 +3,7 @@ package com.ops.www.module.impl;
 import com.ops.www.common.dto.Config2Result;
 import com.ops.www.common.dto.PlayConfig;
 import com.ops.www.common.dto.PlayResult;
-import com.ops.www.common.dto.ResultModel;
+import com.ops.www.common.dto.ResponseResult;
 import com.ops.www.common.util.CallBack;
 import com.ops.www.common.util.IdFactory;
 import com.ops.www.common.util.ProcessUtil;
@@ -13,8 +13,7 @@ import com.ops.www.module.PlayManager;
 import com.ops.www.service.CenterService;
 import com.ops.www.util.PidUtil;
 import com.ops.www.util.cmd.PlayCmdRtmp;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,10 +25,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author 作者 cp
  * @version 创建时间：2020年8月16日 上午9:22:21
  */
+@Slf4j
 @Component("rtmpPlayManager")
 public class RtmpPlayManager implements PlayManager {
-
-    private final Logger logger = LogManager.getLogger();
 
     private final Map<String, CachePlay> caches = new ConcurrentHashMap<>();
 
@@ -44,7 +42,7 @@ public class RtmpPlayManager implements PlayManager {
     @Value(value = "${system.play.rtmp.handle}")
     private String rtmpHandle;
 
-    @Value(value = "${system.ffmpeg.timeOut:3}")
+    @Value(value = "${system.ffmpeg.timeOut}")
     private int timeOut;
 
     @Value(value = "${host}")
@@ -85,7 +83,7 @@ public class RtmpPlayManager implements PlayManager {
         cachePlay.clientIds = new HashSet<>();
         cachePlay.clientIds.add(clientId);
         caches.put(key, cachePlay);
-        logger.info("Open New Url:{}.", url);
+        log.info("Open New Url:{}.", url);
         return cachePlay.playResult;
     }
 
@@ -98,13 +96,13 @@ public class RtmpPlayManager implements PlayManager {
             if (StringUtils.isBlank(result)) {
                 return;
             }
-            ResultModel model = centerService.onClose(playConfig, result.toString());
-            logger.info("onClose call ret:{}.", model.isOk());
+            ResponseResult model = centerService.onClose(playConfig, result.toString());
+            log.info("onClose call ret:{}.", model.isOk());
         };
         String cmd = PlayCmdRtmp.playCmd(playConfig.getUrl(), playConfig.getUserName(),
                 playConfig.getPassWord(), width + "x" + height, rtmpIp, rtmpPort, theme, timeOut);
         ProcessInstance process = ProcessUtil.doCmd(theme, cmd, (args, result) -> {
-            logger.info(result);// 改成info查看ffmpeg回显
+            log.info((String) result);// 改成info查看ffmpeg回显
         }, onClose, 0);
         String url = playConfig.getUrl();
         PlayResult playResult = new PlayResult(rtmpIp, rtmpPort, theme, localHost, localPort);
@@ -139,7 +137,7 @@ public class RtmpPlayManager implements PlayManager {
             }
             closeProcess(cache);
             caches.remove(key);
-            logger.info("Close :{}.", cache.url);
+            log.info("Close :{}.", cache.url);
         }
         return true;
     }

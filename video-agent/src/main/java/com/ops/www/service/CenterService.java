@@ -1,7 +1,7 @@
 package com.ops.www.service;
 
 import com.ops.www.common.dto.PlayConfig;
-import com.ops.www.common.dto.ResultModel;
+import com.ops.www.common.dto.ResponseResult;
 
 /**
  * @author wangzr
@@ -15,5 +15,5 @@ public interface CenterService {
      * @param lines      轨道
      * @return 关闭结果
      */
-    ResultModel onClose(PlayConfig playConfig, String lines);
+    ResponseResult onClose(PlayConfig playConfig, String lines);
 }

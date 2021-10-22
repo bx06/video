@@ -2,6 +2,7 @@ package com.ops.www.center.web;
 
 import java.util.Map;
 
+import com.ops.www.common.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSONObject;
 import com.ops.www.center.module.CenterCallbackService;
 import com.ops.www.common.dto.PlayConfig;
-import com.ops.www.common.dto.ResultModel;
 
 /**
  * @author wangzr
@@ -29,10 +29,10 @@ public class CenterController {
 
     @RequestMapping(value = "/onClose")
     @ResponseBody
-    public ResultModel onClose(@RequestParam Map<String, Object> paramMap) {
+    public ResponseResult onClose(@RequestParam Map<String, Object> paramMap) {
         PlayConfig playConfig = JSONObject.parseObject(paramMap.get("playConfig").toString(), PlayConfig.class);
         String lines = paramMap.get("lines").toString();
         centerCallbackService.onClose(playConfig, lines);
-        return new ResultModel(null, true, null);
+        return new ResponseResult(null, true, null);
     }
 }

@@ -9,6 +9,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.ops.www.center.web.websocket.BaseDefaultWebsocketHandle;
+import com.ops.www.common.dto.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,11 +18,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.ops.www.center.service.CenterService;
-import com.ops.www.common.dto.OnCloseCallBack;
-import com.ops.www.common.dto.Order;
-import com.ops.www.common.dto.PlayConfig;
-import com.ops.www.common.dto.PlayResult;
-import com.ops.www.common.dto.ResultModel;
 import com.ops.www.common.util.StringUtils;
 
 /**
@@ -29,7 +26,7 @@ import com.ops.www.common.util.StringUtils;
  * @author 作者 cp
  * @version 创建时间：2020年7月13日 下午3:01:25
  */
-
+@Slf4j
 @ServerEndpoint("/video/{uuid}")
 @Component
 public class VideoController extends BaseDefaultWebsocketHandle implements OnCloseCallBack {
@@ -44,14 +41,14 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         if (clientId != null) {
             centerService.close(clientId, protocol);
             centerService.deleteCallBack(clientId);
-            logger.debug("Close {}.", clientId);
+            log.debug("Close {}.", clientId);
         }
     }
 
     @Override
     public void openHandle(Session session, String uuid) {
         centerService.registerCallBack(uuid, this);
-        logger.debug("New ClientId [{}].", uuid);
+        log.debug("New ClientId [{}].", uuid);
     }
 
     @Override
@@ -61,7 +58,7 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         if (session == null) {
             return;
         }
-        ResultModel resultModel = new ResultModel("视频流关闭", ResultModel.CODE_SUCCESS, playConfig)
+        ResponseResult resultModel = new ResponseResult("视频流关闭", ResponseResult.CODE_SUCCESS, playConfig)
                 .setOrder(ORDER_CLOSE_CALL);
         resultModel.setLines(lines);
         sendMsg(resultModel, session);
@@ -75,19 +72,19 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         String url = playConfig.getUrl();
         String rtsp = "rtsp:";
         if (StringUtils.isBlank(url) || !url.contains(rtsp)) {
-            ResultModel resultModel = new ResultModel("URL非法", ResultModel.CODE_ERROR, null).setOrder(ORDER_PLAY)
+            ResponseResult resultModel = new ResponseResult("URL非法", ResponseResult.CODE_SERVER_ERROR, null).setOrder(ORDER_PLAY)
                     .setCallbackId(callbackId);
             sendMsg(resultModel, session);
             return;
         }
         PlayResult result = centerService.playVideo(callbackId, playConfig);
         if (result == null) {
-            ResultModel resultModel = new ResultModel("调用失败", ResultModel.CODE_ERROR, null).setOrder(ORDER_PLAY)
+            ResponseResult resultModel = new ResponseResult("调用失败", ResponseResult.CODE_SERVER_ERROR, null).setOrder(ORDER_PLAY)
                     .setCallbackId(callbackId);
             sendMsg(resultModel, session);
             return;
         }
-        ResultModel resultModel = new ResultModel("调用成功", ResultModel.CODE_SUCCESS, result).setOrder(ORDER_PLAY)
+        ResponseResult resultModel = new ResponseResult("调用成功", ResponseResult.CODE_SUCCESS, result).setOrder(ORDER_PLAY)
                 .setCallbackId(callbackId);
         sendMsg(resultModel, session);
     }
@@ -98,14 +95,14 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         String clientId = jsonObject.getString("clientId");
         String theme = jsonObject.getString("theme");
         boolean flag = centerService.close(callbackId, clientId, theme, protocol);
-        int code = flag ? ResultModel.CODE_SUCCESS : ResultModel.CODE_ERROR;
-        ResultModel resultModel = new ResultModel("调用成功", code, theme).setOrder(ORDER_CLOSE).setCallbackId(callbackId);
+        int code = flag ? ResponseResult.CODE_SUCCESS : ResponseResult.CODE_SERVER_ERROR;
+        ResponseResult resultModel = new ResponseResult("调用成功", code, theme).setOrder(ORDER_CLOSE).setCallbackId(callbackId);
         sendMsg(resultModel, session);
     }
 
     private void doOther(JSONObject parse, Session session) {
         String callbackId = parse.getString("callbackId");
-        ResultModel resultModel = new ResultModel("未定义的方法", false, null).setOrder(ORDER_UNDEFINED)
+        ResponseResult resultModel = new ResponseResult("未定义的方法", false, null).setOrder(ORDER_UNDEFINED)
                 .setCallbackId(callbackId);
         sendMsg(resultModel, session);
     }
@@ -142,7 +139,7 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         VideoController.centerService = centerService;
     }
 
-    private void sendMsg(ResultModel resultModel, Session session) {
+    private void sendMsg(ResponseResult resultModel, Session session) {
         sendTextMsg(session, JSON.toJSONString(resultModel, SerializerFeature.DisableCircularReferenceDetect));
     }
 }
