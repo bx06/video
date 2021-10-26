@@ -37,7 +37,7 @@ public class HttpServiceImpl implements HttpService {
 
     @Value(value = "${server.port.ssl.key-store:}")
     public void setProtocol(String protocol) {
-		agentService = (StringUtils.isBlank(protocol) ? "http://" : "https://") + "video-agent/";
+		agentService = (StringUtils.isBlank(protocol) ? "http" : "https") + "://video-agent/";
     }
 
     @Override

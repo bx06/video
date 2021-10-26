@@ -9,8 +9,8 @@
 		<artifactId>video</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>video-regist</artifactId>
-	<name>video-regist</name>
+	<artifactId>video-register</artifactId>
+	<name>video-register</name>
 	<url>https://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,7 +36,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.ops.www.VideoRegistApplication</mainClass>
+							<mainClass>com.ops.www.VideoRegisterApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

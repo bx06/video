@@ -23,7 +23,7 @@
 
 
     <modules>
-        <module>video-regist</module>
+        <module>video-register</module>
         <module>video-agent</module>
         <module>video-center</module>
         <module>video-common</module>

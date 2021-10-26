@@ -2,7 +2,7 @@ logging:
   file:
     path: logging/
   level:
-    root: warn
+    root: info
     com.netflix: warn
 server:
   port: 9999
