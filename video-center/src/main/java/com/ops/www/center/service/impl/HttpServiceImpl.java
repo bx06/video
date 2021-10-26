@@ -15,8 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年8月26日 上午9:47:08
+ * @author wangzr
  */
 @Slf4j
 @Service

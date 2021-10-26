@@ -5,8 +5,7 @@ import com.ops.www.common.dto.PlayResult;
 import com.ops.www.common.dto.ResponseResult;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年8月26日 上午9:45:04
+ * @author wangzr
  */
 public interface HttpService {
 

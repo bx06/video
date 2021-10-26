@@ -1,30 +1,22 @@
 package com.ops.www.center.web;
 
-import static com.ops.www.center.util.OrderConstants.ORDER_CLOSE;
-import static com.ops.www.center.util.OrderConstants.ORDER_PLAY;
-import static com.ops.www.center.util.OrderConstants.ORDER_CLOSE_CALL;
-import static com.ops.www.center.util.OrderConstants.ORDER_UNDEFINED;
-
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
-
-import com.ops.www.center.web.websocket.BaseDefaultWebsocketHandle;
-import com.ops.www.common.dto.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.ops.www.center.service.CenterService;
+import com.ops.www.center.util.OrderConstants;
+import com.ops.www.center.web.websocket.BaseDefaultWebsocketHandle;
+import com.ops.www.common.dto.*;
 import com.ops.www.common.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 
 /**
- * webSocket接口部分
- *
- * @author 作者 cp
- * @version 创建时间：2020年7月13日 下午3:01:25
+ * @author wangzr
  */
 @Slf4j
 @ServerEndpoint("/video/{uuid}")
@@ -59,7 +51,7 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
             return;
         }
         ResponseResult resultModel = new ResponseResult("视频流关闭", ResponseResult.CODE_SUCCESS, playConfig)
-                .setOrder(ORDER_CLOSE_CALL);
+                .setOrder(OrderConstants.CLOSE_CALL);
         resultModel.setLines(lines);
         sendMsg(resultModel, session);
     }
@@ -72,20 +64,23 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         String url = playConfig.getUrl();
         String rtsp = "rtsp:";
         if (StringUtils.isBlank(url) || !url.contains(rtsp)) {
-            ResponseResult resultModel = new ResponseResult("URL非法", ResponseResult.CODE_SERVER_ERROR, null).setOrder(ORDER_PLAY)
-                    .setCallbackId(callbackId);
+            ResponseResult resultModel =
+                    new ResponseResult("URL非法", ResponseResult.CODE_SERVER_ERROR, null).setOrder(OrderConstants.PLAY)
+                            .setCallbackId(callbackId);
             sendMsg(resultModel, session);
             return;
         }
         PlayResult result = centerService.playVideo(callbackId, playConfig);
         if (result == null) {
-            ResponseResult resultModel = new ResponseResult("调用失败", ResponseResult.CODE_SERVER_ERROR, null).setOrder(ORDER_PLAY)
-                    .setCallbackId(callbackId);
+            ResponseResult resultModel =
+                    new ResponseResult("调用失败", ResponseResult.CODE_SERVER_ERROR, null).setOrder(OrderConstants.PLAY)
+                            .setCallbackId(callbackId);
             sendMsg(resultModel, session);
             return;
         }
-        ResponseResult resultModel = new ResponseResult("调用成功", ResponseResult.CODE_SUCCESS, result).setOrder(ORDER_PLAY)
-                .setCallbackId(callbackId);
+        ResponseResult resultModel =
+                new ResponseResult("调用成功", ResponseResult.CODE_SUCCESS, result).setOrder(OrderConstants.PLAY)
+                        .setCallbackId(callbackId);
         sendMsg(resultModel, session);
     }
 
@@ -96,13 +91,14 @@ public class VideoController extends BaseDefaultWebsocketHandle implements OnClo
         String theme = jsonObject.getString("theme");
         boolean flag = centerService.close(callbackId, clientId, theme, protocol);
         int code = flag ? ResponseResult.CODE_SUCCESS : ResponseResult.CODE_SERVER_ERROR;
-        ResponseResult resultModel = new ResponseResult("调用成功", code, theme).setOrder(ORDER_CLOSE).setCallbackId(callbackId);
+        ResponseResult resultModel =
+                new ResponseResult("调用成功", code, theme).setOrder(OrderConstants.CLOSE).setCallbackId(callbackId);
         sendMsg(resultModel, session);
     }
 
     private void doOther(JSONObject parse, Session session) {
         String callbackId = parse.getString("callbackId");
-        ResponseResult resultModel = new ResponseResult("未定义的方法", false, null).setOrder(ORDER_UNDEFINED)
+        ResponseResult resultModel = new ResponseResult("未定义的方法", false, null).setOrder(OrderConstants.UNDEFINED)
                 .setCallbackId(callbackId);
         sendMsg(resultModel, session);
     }

@@ -4,8 +4,7 @@ import com.ops.www.common.dto.OnCloseCallBack;
 import com.ops.www.common.dto.PlayConfig;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月31日 上午10:34:10
+ * @author wangzr
  */
 public interface CenterCallbackService {
 

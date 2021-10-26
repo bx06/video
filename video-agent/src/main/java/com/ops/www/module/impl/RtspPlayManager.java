@@ -19,8 +19,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月13日 下午1:53:28
+ * @author wangzr
  */
 @Slf4j
 @Component("rtspPlayManager")
@@ -41,15 +40,15 @@ public class RtspPlayManager implements PlayManager {
     @Value(value = "${system.ffmpeg.timeOut}")
     private int timeOut;
 
-    private CenterService centerService;
-
-    @Value(value = "${host}")
+    @Value(value = "${server.host}")
     private String localHost;
 
     @Value(value = "${server.port}")
     private int localPort;
 
     private final Map<String, CachePlay> caches = new ConcurrentHashMap<>();
+
+    private CenterService centerService;
 
     @Autowired
     private void setService(CenterService centerService) {

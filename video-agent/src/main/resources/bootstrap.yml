@@ -1,7 +1,6 @@
 logging:
   file:
     path: logging/
-host: 127.0.0.1
 system:
   #  ssl: true #是否开启ssl
   ffmpeg:
@@ -23,6 +22,7 @@ management:
     web:
       base-path: /actuator/info
 server:
+  host: 127.0.0.1
   port: 9998
 spring:
   profiles:

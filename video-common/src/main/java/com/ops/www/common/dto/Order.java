@@ -1,9 +1,7 @@
 package com.ops.www.common.dto;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月13日 下午4:13:03
- * 
+ * @author wangzr
  */
 public final class Order {
 

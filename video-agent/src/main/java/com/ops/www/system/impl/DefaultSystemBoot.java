@@ -8,8 +8,7 @@ import com.ops.www.module.PlayManager;
 import com.ops.www.system.SystemBoot;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月13日 上午10:53:03
+ * @author wangzr
  */
 @Component
 public class DefaultSystemBoot implements SystemBoot {

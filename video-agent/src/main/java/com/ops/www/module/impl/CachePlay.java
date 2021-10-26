@@ -7,8 +7,7 @@ import com.ops.www.common.dto.PlayResult;
 import com.ops.www.common.util.ProcessUtil.ProcessInstance;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年8月16日 上午10:02:16
+ * @author wangzr
  */
 public class CachePlay {
     final String url;

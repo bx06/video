@@ -18,14 +18,13 @@ import com.ops.www.common.dto.PlayResult;
 import com.ops.www.module.PlayManager;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年8月26日 上午9:27:34
+ * @author wangzr
  */
 @Controller
 @RequestMapping("/agent")
 public class ApiCenter {
 
-    @Value(value = "${host}")
+    @Value(value = "${server.host}")
     private String localHost;
 
     @Value(value = "${server.port}")

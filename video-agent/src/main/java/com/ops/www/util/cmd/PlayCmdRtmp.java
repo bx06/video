@@ -4,9 +4,7 @@ import com.ops.www.common.util.StringUtils;
 import com.sun.jna.Platform;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年8月15日 下午3:11:44
- * 
+ * @author wangzr
  */
 public class PlayCmdRtmp {
 

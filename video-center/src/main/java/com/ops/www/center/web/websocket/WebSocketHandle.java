@@ -3,8 +3,7 @@ package com.ops.www.center.web.websocket;
 import javax.websocket.Session;
 
 /**
- * @author cp
- * @version 创建时间：2020年1月6日 上午10:21:21
+ * @author wangzr
  */
 public interface WebSocketHandle {
 

@@ -6,8 +6,7 @@ import java.io.LineNumberReader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月13日 上午11:09:31
+ * @author wangzr
  */
 public class ProcessUtil {
 

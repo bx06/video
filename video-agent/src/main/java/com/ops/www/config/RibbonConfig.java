@@ -5,11 +5,13 @@ import com.netflix.loadbalancer.IPing;
 import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.PingUrl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author wangzr
  */
-public class RibbonConfiguration {
+@Configuration
+public class RibbonConfig {
 
     @Bean
     public IPing ribbonPing() {

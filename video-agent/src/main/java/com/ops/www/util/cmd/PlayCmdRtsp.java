@@ -4,8 +4,7 @@ import com.ops.www.common.dto.PlayConfig;
 import com.ops.www.common.util.StringUtils;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月31日 上午10:04:26
+ * @author wangzr
  */
 public class PlayCmdRtsp {
 

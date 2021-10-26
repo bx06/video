@@ -3,9 +3,7 @@ package com.ops.www.common.dto;
 import java.io.Serializable;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月15日 上午11:25:16
- * 
+ * @author wangzr
  */
 public class Config2Result implements Serializable {
 	private static final long serialVersionUID = 1L;

@@ -3,8 +3,7 @@ package com.ops.www.common.dto;
 import java.io.Serializable;
 
 /**
- * @author 作者 cp
- * @version 创建时间：2020年7月13日 下午1:29:31
+ * @author wangzr
  */
 public class PlayConfig implements Serializable {
 
