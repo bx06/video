@@ -128,7 +128,7 @@ function wsConnect(host, clientId, times) {
 	var wsObj = {};
 	wsObj.init = function() {
 		var wss = null;
-		var ishttps = 'https:' == document.location.protocol ? true : false;
+		var ishttps = 'https:' === document.location.protocol;
 		if (ishttps) {
 			wss = new WebSocket("wss://" + host + "/video/" + clientId);
 		} else {

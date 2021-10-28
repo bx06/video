@@ -76,13 +76,13 @@
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna</artifactId>
-                <version>5.5.0</version>
+                <version>5.9.0</version>
             </dependency>
 
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
-                <version>1.2.45</version>
+                <version>1.2.78</version>
             </dependency>
 
             <dependency>
